@@ -4,10 +4,17 @@ BEGIN {
     base     = "peepfm"
 
     filename = "artists"
-    path     = "${XDG_DATA_HOME:-$HOME/.local/share}" "/" base
-    data     = path "/" filename
+    basepath = get_xdg_path() "/" base
+    data     = basepath "/" filename
 
     read(data)
+}
+
+function get_xdg_path() {
+    cmd = "printf '%s\n' " " ${XDG_DATA_HOME:-$HOME/.local/share}"
+    cmd | getline xdg
+    close(cmd)
+    return xdg
 }
 
 function read(input) {
