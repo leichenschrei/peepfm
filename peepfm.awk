@@ -18,6 +18,10 @@ function get_xdg_path() {
 }
 
 function read(input) {
-    while ((getline artist < input) > 0)
+    while ((getline artist < input) > 0) {
+        sub(/^[ \t]*/, "", artist)
+        sub(/[ \t]*$/, "", artist)
         ARGV[ARGC++] = artist
+        print artist
+    }
 }
