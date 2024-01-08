@@ -2,6 +2,7 @@
 # Parse recent artist shouts on lastfm.
 BEGIN {
     base     = "peepfm"
+    date     = getdate()
 
     filename = "artists"
     basepath = get_xdg_path() "/" base
@@ -11,6 +12,18 @@ BEGIN {
     sitetail = "/+shoutbox"
 
     read(data)
+}
+
+index($0, date) {
+    for (i = 0; i < 10; i++) getline shout
+    print shout
+}
+
+function getdate() {
+    cmd = "date +%Y-%m-%d"
+    cmd | getline date
+    close(cmd)
+    return date
 }
 
 function get_xdg_path() {
