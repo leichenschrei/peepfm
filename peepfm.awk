@@ -21,7 +21,7 @@ function read(input) {
     while ((getline artist < input) > 0) {
         sub(/^[ \t]*/, "", artist)
         sub(/[ \t]*$/, "", artist)
+        gsub(" ", "+", artist)
         ARGV[ARGC++] = artist
-        print artist
     }
 }
