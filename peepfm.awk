@@ -25,6 +25,13 @@ function read(input) {
         sub(/^[ \t]*/, "", artist)
         sub(/[ \t]*$/, "", artist)
         gsub(" ", "+", artist)
-        ARGV[ARGC++] = sitehead artist sitetail
+        ARGV[ARGC++] = scrape(artist, sitehead artist sitetail)
     }
+}
+
+function scrape(name, link) {
+    out = "/tmp/" name ".html"
+    cmd = "curl" " -L " link " > " out
+    system(cmd)
+    return out
 }
