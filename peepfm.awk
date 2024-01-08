@@ -16,8 +16,9 @@ BEGIN {
 
 index($0, date) {
     for (i = 0; i < 10; i++) getline shout
+    name = stylise(FILENAME)
     sub(/^ */, "> ", shout)
-    print shout
+    print name, shout
 }
 
 function getdate() {
@@ -25,6 +26,12 @@ function getdate() {
     cmd | getline date
     close(cmd)
     return date
+}
+
+function stylise(name) {
+    sub("/tmp/", "", name)
+    sub(".html", "", name)
+    return toupper(name)
 }
 
 function get_xdg_path() {
