@@ -3,16 +3,28 @@
 BEGIN {
     base     = "peepfm"
 
-    data     = "artists"
-    path     = "${XDG_DATA_HOME:-$HOME/.local/share}" "/" base
-    datapath = path "/" data
+    filename = "artists"
+    basepath = get_xdg_path() "/" base
+    data     = basepath "/" filename
 
-    read(datapath)
+    sitehead = "https://www.last.fm/music/"
+    sitetail = "/+shoutbox"
+
+    read(data)
 }
 
-function read(data) {
-    cmd = "cat" " " data
-    while (cmd | getline line)
-        # TODO: parse the line
+function get_xdg_path() {
+    cmd = "printf '%s\n' " " ${XDG_DATA_HOME:-$HOME/.local/share}"
+    cmd | getline xdg
     close(cmd)
+    return xdg
+}
+
+function read(input) {
+    while ((getline artist < input) > 0) {
+        sub(/^[ \t]*/, "", artist)
+        sub(/[ \t]*$/, "", artist)
+        gsub(" ", "+", artist)
+        ARGV[ARGC++] = sitehead artist sitetail
+    }
 }
