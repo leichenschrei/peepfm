@@ -11,6 +11,7 @@ BEGIN {
     sitehead = "https://www.last.fm/music/"
     sitetail = "/+shoutbox"
 
+    say("fetching artist shoutboxes as of " date)
     read(data)
 }
 
@@ -20,6 +21,8 @@ index($0, date) {
     sub(/^ */, "> ", shout)
     print name, shout
 }
+
+function say(content) { printf "%s: %s\n", base, content }
 
 function getdate() {
     cmd = "date +%Y-%m-%d"
