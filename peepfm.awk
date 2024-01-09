@@ -18,7 +18,11 @@ BEGIN {
 
 index($0, date) {
     for (i = 0; i < 10; i++) getline shout
-    name = stylise(FILENAME)
+
+    prev = p
+    name = p = stylise(FILENAME)
+    if (name != prev) print ""
+
     sub(/^ */, "> ", shout)
     print name, shout
 }
