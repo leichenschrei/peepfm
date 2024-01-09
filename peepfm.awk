@@ -24,6 +24,8 @@ index($0, date) {
     if (name != prev) print ""
 
     sub(/^ */, "> ", shout)
+    gsub("&#34;", "\"", shout)
+    gsub("&#39;", "'", shout)
     print name, shout
 }
 
