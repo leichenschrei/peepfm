@@ -61,7 +61,7 @@ function read(input) {
 
 function scrape(name, link) {
     out = "/tmp/" name ".html"
-    cmd = "curl" " -L " link " > " out
+    cmd = "curl" " -s -L " link " > " out
     system(cmd)
     return out
 }
