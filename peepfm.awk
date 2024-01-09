@@ -11,19 +11,35 @@ BEGIN {
     sitehead = "https://www.last.fm/music/"
     sitetail = "/+shoutbox"
 
+    say("fetching artist shoutboxes as of " date)
     read(data)
+    say("processing " nartists " web pages...")
 }
 
 index($0, date) {
     for (i = 0; i < 10; i++) getline shout
-    print shout
+
+    prev = p
+    name = p = stylise(FILENAME)
+    if (name != prev) print ""
+
+    sub(/^ */, "> ", shout)
+    print name, shout
 }
+
+function say(content) { printf "%s: %s\n", base, content }
 
 function getdate() {
     cmd = "date +%Y-%m-%d"
     cmd | getline date
     close(cmd)
     return date
+}
+
+function stylise(name) {
+    sub("/tmp/", "", name)
+    sub(".html", "", name)
+    return toupper(name)
 }
 
 function get_xdg_path() {
@@ -35,6 +51,7 @@ function get_xdg_path() {
 
 function read(input) {
     while ((getline artist < input) > 0) {
+        nartists++
         sub(/^[ \t]*/, "", artist)
         sub(/[ \t]*$/, "", artist)
         gsub(" ", "+", artist)
