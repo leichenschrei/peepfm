@@ -62,7 +62,7 @@ function stylise(name) {
 }
 
 function get_xdg_path() {
-    cmd = "printf '%s\n' " " ${XDG_DATA_HOME:-$HOME/.local/share}"
+    cmd = "printf '%s\n' " "${XDG_DATA_HOME:-$HOME/.local/share}"
     cmd | getline xdg
     close(cmd)
     return xdg
