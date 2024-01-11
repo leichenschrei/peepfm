@@ -13,6 +13,7 @@ BEGIN {
     sitetail = "/+shoutbox"
 
     check(dep) || die("utility is not installed: " dep)
+    check(data) || die("file does not exist: " data)
 
     say("fetching artist shoutboxes as of " date)
     read(data)
@@ -41,10 +42,13 @@ function die(message) {
     exit(2)
 }
 
-function check(util) {
-    cmd = "command -v"
-    rdr = ">/dev/null 2>&1"
-    return (system(cmd " " util " " rdr) == 0 ? 1 : 0)
+function check(arg) {
+    if (arg == dep) {
+        cmd = "command -v"
+        rdr = ">/dev/null 2>&1"
+        return (system(cmd " " arg " " rdr) == 0 ? 1 : 0)
+    }
+    return (system("test -f" " " arg) == 0 ? 1 : 0)
 }
 
 function getdate() {
