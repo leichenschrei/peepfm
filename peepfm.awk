@@ -3,6 +3,7 @@
 BEGIN {
     base     = "peepfm"
     date     = getdate()
+    dep      = "curl"
 
     filename = "artists"
     basepath = get_xdg_path() "/" base
@@ -10,6 +11,8 @@ BEGIN {
 
     sitehead = "https://www.last.fm/music/"
     sitetail = "/+shoutbox"
+
+    check(dep) || die("utility is not installed: " dep)
 
     say("fetching artist shoutboxes as of " date)
     read(data)
@@ -30,6 +33,19 @@ index($0, date) {
 }
 
 function say(content) { printf "%s: %s\n", base, content }
+
+function die(message) {
+    err = "cat >&2"
+    printf "%s: error: %s\n", base, message | err
+    close(err)
+    exit(2)
+}
+
+function check(util) {
+    cmd = "command -v"
+    rdr = ">/dev/null 2>&1"
+    return (system(cmd " " util " " rdr) == 0 ? 1 : 0)
+}
 
 function getdate() {
     cmd = "date +%Y-%m-%d"
