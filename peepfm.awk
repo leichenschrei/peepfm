@@ -1,4 +1,6 @@
 #!/usr/bin/awk -f
+# ISC License, (c) 2024 Dobromir Tolmach.
+#
 # Parse recent artist shouts on lastfm.
 BEGIN {
     base     = "peepfm"
@@ -42,20 +44,15 @@ function die(message) {
     exit(2)
 }
 
-function check(arg) {
-    if (arg == dep) {
-        cmd = "command -v"
-        rdr = ">/dev/null 2>&1"
-        return (system(cmd " " arg " " rdr) == 0 ? 1 : 0)
-    }
-    return (system("test -f" " " arg) == 0 ? 1 : 0)
-}
-
 function getdate() {
-    cmd = "date +%Y-%m-%d"
-    cmd | getline date
-    close(cmd)
-    return date
+    pattern = "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
+    if (ARGV[1] !~ pattern) {
+        cmd = "date +%Y-%m-%d"
+        cmd | getline date
+        close(cmd)
+        return date
+    }
+    return ARGV[1]
 }
 
 function stylise(name) {
@@ -70,6 +67,15 @@ function get_xdg_path() {
     cmd | getline xdg
     close(cmd)
     return xdg
+}
+
+function check(arg) {
+    if (arg == dep) {
+        cmd = "command -v"
+        rdr = ">/dev/null 2>&1"
+        return (system(cmd " " arg " " rdr) == 0 ? 1 : 0)
+    }
+    return (system("test -f" " " arg) == 0 ? 1 : 0)
 }
 
 function read(input) {
