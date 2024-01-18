@@ -79,12 +79,17 @@ function check(arg) {
 }
 
 function read(input) {
+    if (ARGV[1] == "") redownload = "true"
+    ARGC = 1
     while ((getline artist < input) > 0) {
         nartists++
         sub(/^[ \t]*/, "", artist)
         sub(/[ \t]*$/, "", artist)
         gsub(" ", "+", artist)
-        ARGV[ARGC++] = scrape(artist, sitehead artist sitetail)
+        if (redownload == "true")
+            ARGV[ARGC++] = scrape(artist, sitehead artist sitetail)
+        else
+            ARGV[ARGC++] = store(artist, sitehead artist sitetail)
     }
 }
 
@@ -94,3 +99,5 @@ function scrape(name, link) {
     system(cmd)
     return out
 }
+
+function store(name) { return "/tmp/" name ".html" }
