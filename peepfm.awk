@@ -17,7 +17,7 @@ BEGIN {
     check(dep) || die("utility is not installed: " dep)
     check(data) || die("file does not exist: " data)
 
-    say("fetching artist shoutboxes as of " date)
+    hasargs() || say("fetching artist shoutboxes as of " date)
     read(data)
     say("processing " nartists " web pages...")
 }
@@ -94,6 +94,8 @@ function read(input) {
             ARGV[ARGC++] = store(artist)
     }
 }
+
+function hasargs() { return (ARGV[1] != "") ? 1 : 0 }
 
 function scrape(name, link) {
     out = "/tmp/" name ".html"
