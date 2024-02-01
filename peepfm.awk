@@ -32,6 +32,8 @@ index($0, date) {
     sub(/^ */, "> ", shout)
     gsub("&#34;", "\"", shout)
     gsub("&#39;", "'", shout)
+    gsub("&gt;", ">", shout)
+    gsub("&lt;", "<", shout)
     print name, shout
 }
 
@@ -89,7 +91,7 @@ function read(input) {
         if (redownload == "true")
             ARGV[ARGC++] = scrape(artist, sitehead artist sitetail)
         else
-            ARGV[ARGC++] = store(artist, sitehead artist sitetail)
+            ARGV[ARGC++] = store(artist)
     }
 }
 
