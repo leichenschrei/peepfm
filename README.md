@@ -5,9 +5,6 @@ This is a small utility written in
 that crawls user-defined artist shoutboxes on [lastfm](https://last.fm/)
 and prints shouts published throughout the day.
 
-There is currently no way for you to parse past shouts, though. I may or
-may not add this functionality in the future.
-
 ## Dependencies
 
 `peepfm.awk` uses the `curl` package to scrape web pages.
@@ -34,6 +31,9 @@ Nocturnal Emissions
 Cabaret Voltaire
 Current 93
 Bourbonese Qualk
+Sutcliffe Jügend
+Genocide Organ
+Muslimgauze
 EOF
 ```
 
@@ -46,18 +46,49 @@ cabaRET voltAIre
     nocTURNal eMISSiONs
 ```
 
-On January 11th, 2024, `peepfm.awk` produces the following output based
+### Parsing recent shouts
+
+First, let’s run `peepfm.awk` without any arguments. This will allow it
+to fetch the web pages that we will parse locally later on.
+
+On February 1st, 2024, `peepfm.awk` produces the following output based
 on the previously defined artists:
 
 ```sh
 $ ./peepfm.awk
-peepfm: fetching artist shoutboxes as of 2024-01-10
-peepfm: processing 4 web pages...
+peepfm: fetching artist shoutboxes as of 2024-02-01
+peepfm: processing 7 web pages...
+
+MUSLIMGAUZE > dis nigga been right
 ```
 
-As you can see, no messages were printed to the terminal on that date
-because no one had posted in the shoutboxes of Nocturnal Emissions,
-Cabaret Voltaire, Current 93, and Bourbonese Qualk.
+### Parsing shouts published on a given date
+
+Since we ran `peepfm.awk` once without any arguments, it pulled all the
+relevant web pages from last.fm and saved them in a temporary directory.
+If we were to look up shouts published yesterday, two weeks—or even
+months—ago, we could easily do this without re-downloading every page by
+giving the program a specific date in the format of ‘YYYY-MM-DD’:
+
+> **NOTE**:
+>
+> The program parses the index page of the comments, so many older
+> shouts will not be printed out.
+
+```
+$ ./peepfm.awk 2023-11-08
+peepfm: processing 7 web pages...
+
+GENOCIDE ORGAN > Why? To spread the genocide over Tel-Avive or Haifa or wherever in Israel... It could be a good idea.
+GENOCIDE ORGAN > "Ich werde ihnen zeigen, wo die eiserne kreuze wachsen..."
+GENOCIDE ORGAN > No, Prurient is so secondary and overrated...
+
+MUSLIMGAUZE > Hidden Crash Bandicoot soundtrack
+
+SUTCLIFFE JÜGEND > Seesh... Well, why not
+```
+
+### Dealing with Unicode
 
 > **NOTE**:
 >
